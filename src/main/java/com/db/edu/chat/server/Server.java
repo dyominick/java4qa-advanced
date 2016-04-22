@@ -13,7 +13,7 @@ public class Server {
 	private static final Logger logger = LoggerFactory.getLogger(Server.class);
 	
 	public static final String HOST = "127.0.0.1";
-	public static final int PORT = 4445;
+	public static final int PORT = 4498;
 	
 	private final Collection<Connection> connections = new java.util.concurrent.CopyOnWriteArrayList<>();
 	private volatile ServerSocket serverSocket;
