@@ -1,58 +1,51 @@
 package com.db.edu.chat.server;
 
+import com.db.edu.chat.common.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.net.Socket;
 import java.util.Collection;
 
 public class ChatBusinessLogic implements BusinessLogic {
     private static final Logger logger = LoggerFactory.getLogger(ChatBusinessLogic.class);
 
-    private Socket inSocket;
-    private Collection<Socket> clientsSockets;
+    private Connection connection;
+    private Collection<Connection> connections;
 
-    public ChatBusinessLogic(Socket inSocket, Collection<Socket> clientsSockets) {
-        this.inSocket = inSocket;
-        this.clientsSockets = clientsSockets;
+    public ChatBusinessLogic(Connection realConnection, Collection<Connection> connections) {
+        this.connection = realConnection;
+        this.connections = connections;
     }
 
     @Override
-    public void handle() {
-        BufferedReader socketReader = new BufferedReader(new InputStreamReader(inSocket.getInputStream()));
-        String message = socketReader.readLine();
-        if(message == null) break;
+    public int handle() throws IOException{
+        String message=connection.read();
+        if(message == null) return -1;
 
-        logger.info("Message from client "
-            + inSocket.getInetAddress() + ":"
-            + inSocket.getPort() + "> "
-            + message);
 
-        for (Socket outSocket : clientsSockets) {
+
+        for (Connection outConnection : connections) {
             try {
-                if (outSocket.isClosed()) continue;
-                if (!outSocket.isBound()) continue;
-                if (!outSocket.isConnected()) continue;
-                if (outSocket == this.inSocket) continue;
-                logger.info("Writing message " + message + " to socket " + outSocket);
 
-                BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(outSocket.getOutputStream()));
-                socketWriter.write(message);
-                socketWriter.newLine();
-                socketWriter.flush();
+                if (outConnection == this.connection) continue;
+
+                outConnection.write(message);
+
             } catch (IOException e) {
-                logger.error("Error writing message " + message + " to socket " + outSocket + ". Closing socket", e);
+                logger.error("Error writing message " + message + " to connection " + outConnection + ". Closing socket", e);
                 try {
-                    outSocket.close();
+                    outConnection.close();
                 } catch (IOException innerE) {
                     logger.error("Error closing socket ", innerE);
                 }
 
-                logger.error("Removing connection " + outSocket);
-                clientsSockets.remove(outSocket);
+                logger.error("Removing connection " + outConnection);
+                connections.remove(outConnection);
             }
+
         }
 
+        return 0;
     }
 }
