@@ -2,6 +2,8 @@ package com.db.edu.chat.server;
 
 import static org.junit.Assume.assumeNotNull;
 
+import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +16,15 @@ public class JUnitLoadTest {
 
     private IOException gotException = null;
 
+    Server ser;
+    @Before
+    public void setUp() throws ServerError, IOException {
+        ser = new Server();
+        ser.start();
+    }
     @Test(timeout = 1000)
     public void shouldGetMessageBackWhenSendMessage() throws IOException, InterruptedException, ServerError {
-        Server ser= new Server();
-        ser.start();
+
         final String sentMessage = Thread.currentThread().getName() + ";seed:" + Math.random();
         logger.debug("Sending message: " + sentMessage);
 
@@ -56,7 +63,7 @@ public class JUnitLoadTest {
 
         readerClient.join();
         if(gotException != null) throw gotException;
-        ser.stop();
+
     }
 
 
@@ -68,5 +75,10 @@ public class JUnitLoadTest {
         socketWriter.write(text);
         socketWriter.newLine();
         socketWriter.flush();
+    }
+    @After
+    public void cleanUp() throws ServerError, IOException {
+
+        ser.stop();
     }
 }
