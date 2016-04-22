@@ -32,7 +32,7 @@ Starting with Java Code for QA
 - Arrays 
 - Strings 
 - Static code analyser demo 
-- Java8 key features
+- Java8 key features: lambdas, streams
 
 # Exceptions 
 - Exceptions in Java 
@@ -71,5 +71,18 @@ Starting with Java Code for QA
 - AppServer architecture 
 - Thread Pools 
 - Connection Pools 
-- PerparedStatement Caches
+- PreparedStatement Caches
+
+# Spring
+- Core
+- Testing
+
+# JSON for testing
+
+# MVN plugins
+
+Resources
+=========
+http://54.164.53.247:8080/jenkins/
+
 
