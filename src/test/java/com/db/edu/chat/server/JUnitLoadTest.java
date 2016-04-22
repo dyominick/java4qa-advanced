@@ -15,7 +15,8 @@ public class JUnitLoadTest {
     private IOException gotException = null;
 
     @Test(timeout = 1000)
-    public void shouldGetMessageBackWhenSendMessage() throws IOException, InterruptedException {
+    public void shouldGetMessageBackWhenSendMessage() throws IOException, InterruptedException, ServerError {
+        new Server().start();
         final String sentMessage = Thread.currentThread().getName() + ";seed:" + Math.random();
         logger.debug("Sending message: " + sentMessage);
 

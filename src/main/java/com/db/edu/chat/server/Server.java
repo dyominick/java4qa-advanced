@@ -2,10 +2,10 @@ package com.db.edu.chat.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.net.SocketException;
 import java.util.Collection;
 
+import com.db.edu.chat.common.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +15,7 @@ public class Server {
 	public static final String HOST = "127.0.0.1";
 	public static final int PORT = 4445;
 	
-	private final Collection<Socket> clientsSockets = new java.util.concurrent.CopyOnWriteArrayList<>();
+	private final Collection<Connection> connections = new java.util.concurrent.CopyOnWriteArrayList<>();
 	private volatile ServerSocket serverSocket;
 	private volatile boolean stopFlag;
 
@@ -24,12 +24,19 @@ public class Server {
 		public void run() {
 			while(!isInterrupted()) {
 				try {
-					Socket clientSocket = serverSocket.accept();
-					logger.info("Client connected: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
-					clientsSockets.add(clientSocket);
+					Connection clientConnection = new RealConnection(serverSocket);
 
-					Thread clientConnectionHandler = new Thread(new ClientConnectionHandler(clientSocket, clientsSockets));
+
+					connections.add(clientConnection);
+
+					Thread clientConnectionHandler = new Thread(
+						new ClientConnectionHandler(
+								clientConnection,
+								connections,
+							new ChatBusinessLogic(clientConnection, connections)
+						)
+					);
 					clientConnectionHandler.setDaemon(true);
 					clientConnectionHandler.start();
 				} catch (SocketException e) {
