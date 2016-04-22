@@ -6,6 +6,9 @@ import com.db.edu.chat.common.Connection;
 
 
 public class Client {
+	private Client() {
+	}
+
 	public static void main(String... args) throws IOException {
 		Connection con = new RealClientConnection();
 

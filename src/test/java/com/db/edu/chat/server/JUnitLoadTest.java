@@ -81,6 +81,7 @@ public class JUnitLoadTest {
     public void cleanUp() throws ServerError, IOException {
 
         ser.stop();
+        if (readerClientSocket!=null)
         readerClientSocket.close();
     }
 }
