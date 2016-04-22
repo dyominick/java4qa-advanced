@@ -17,6 +17,7 @@ public class JUnitLoadTest {
     private IOException gotException = null;
 
     Server ser;
+    Socket readerClientSocket;
     @Before
     public void setUp() throws ServerError, IOException {
         ser = new Server();
@@ -80,5 +81,6 @@ public class JUnitLoadTest {
     public void cleanUp() throws ServerError, IOException {
 
         ser.stop();
+        readerClientSocket.close();
     }
 }
