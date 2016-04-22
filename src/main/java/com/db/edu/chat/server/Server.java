@@ -40,7 +40,7 @@ public class Server {
 					clientConnectionHandler.setDaemon(true);
 					clientConnectionHandler.start();
 				} catch (SocketException e) {
-					logger.debug("Intentionally closed socket: time to stop");
+					logger.debug("Intentionally closed socket: time to stop",e);
 					break;
 				} catch (IOException e) {
 					logger.error("Network error", e);

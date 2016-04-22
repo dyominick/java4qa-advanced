@@ -1,6 +1,8 @@
 package com.db.edu.chat.client;
 
 import com.db.edu.chat.common.Connection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
@@ -8,6 +10,7 @@ import java.io.IOException;
  * Created by Student on 22.04.2016.
  */
 public class ClientThreadAction implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(ClientThreadAction.class);
     private Connection con;
     public ClientThreadAction(Connection con){
         this.con=con;
@@ -21,7 +24,8 @@ public class ClientThreadAction implements Runnable {
 
                 System.out.println(message);
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error("IO exception: ",e);
+
             }
         }
     }
