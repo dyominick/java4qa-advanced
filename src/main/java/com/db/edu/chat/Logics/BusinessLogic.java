@@ -1,4 +1,4 @@
-package com.db.edu.chat.Logics;
+package com.db.edu.chat.logics;
 
 import java.io.IOException;
 

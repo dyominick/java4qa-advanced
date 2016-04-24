@@ -1,14 +1,12 @@
 package com.db.edu.chat.client;
 
-import com.db.edu.chat.Connection.Connection;
+import com.db.edu.chat.connection.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-/**
- * Created by Student on 22.04.2016.
- */
+
 public class ClientThreadAction implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(ClientThreadAction.class);
     private Connection con;

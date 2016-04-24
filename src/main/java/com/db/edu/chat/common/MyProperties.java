@@ -41,7 +41,8 @@ public class MyProperties {
            logger.error("Properties not found: ", e);
        } finally {
            try {
-               propertiesStream.close();
+               if (null!=propertiesStream)
+                   propertiesStream.close();
            } catch (IOException e) {
                logger.error("Error while closing properties stream: ",e);
            }

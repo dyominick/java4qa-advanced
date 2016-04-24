@@ -10,7 +10,6 @@ public class Server {
 	public static final int PORT = 4498;
 	private volatile ServerSocket serverSocket;
 	private ServerThreadAction threadAction;
-	private Thread connectionEventExecutor;
 
 	public void start() throws ServerError {
 		try {
@@ -19,7 +18,7 @@ public class Server {
 			throw new ServerError(e);
 		}
 		threadAction = new ServerThreadAction(serverSocket);
-		connectionEventExecutor = new Thread(threadAction);
+		Thread connectionEventExecutor = new Thread(threadAction);
 		connectionEventExecutor.start();
 	}
 	
