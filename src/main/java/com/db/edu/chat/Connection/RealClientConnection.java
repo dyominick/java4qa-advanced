@@ -1,15 +1,12 @@
-package com.db.edu.chat.Connection;
+package com.db.edu.chat.connection;
 
-import com.db.edu.chat.Connection.Connection;
 import com.db.edu.chat.common.MyProperties;
 import com.db.edu.chat.server.Server;
 
 import java.io.*;
 import java.net.Socket;
 
-/**
- * Created by Student on 22.04.2016.
- */
+
 public class RealClientConnection implements Connection {
     final Socket socket;
     final BufferedWriter socketWriter;

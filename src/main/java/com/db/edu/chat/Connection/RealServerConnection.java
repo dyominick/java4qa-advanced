@@ -1,4 +1,4 @@
-package com.db.edu.chat.Connection;
+package com.db.edu.chat.connection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,9 +7,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-/**
- * Created by Student on 22.04.2016.
- */
+
 public class RealServerConnection implements Connection {
 
     private static final Logger logger = LoggerFactory.getLogger(RealServerConnection.class);

@@ -1,19 +1,11 @@
-package com.db.edu.chat.Connection;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+package com.db.edu.chat.connection;
 
 import java.io.IOException;
 
-/**
- * Created by Student on 22.04.2016.
- */
 public interface Connection {
-    public String read() throws IOException;
-    public void write (String message) throws IOException;
-    default void close() throws IOException {
-        return;
-    }
-
+    String read() throws IOException;
+    void write (String message) throws IOException;
+    default void close() throws IOException {}
     default String consoleRead() throws IOException {
         return null;
     }
