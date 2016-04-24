@@ -33,11 +33,7 @@ public class ClientConnectionHandler implements Runnable {
                     break;
             } catch (IOException e) {
                 LOGGER.error("Network reading message from socket " + connection, e);
-                try {
-                    connection.close();
-                } catch (IOException innerE) {
-                    LOGGER.debug("Error closing socket ", innerE);
-                }
+                connection.close();
                 LOGGER.error("Removing socket and stop this handler thread");
                 realConnections.remove(connection);
                 return;

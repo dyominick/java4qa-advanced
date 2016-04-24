@@ -8,18 +8,17 @@ import org.slf4j.LoggerFactory;
 public class Server {
     private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
     public static final int PORT = 4498;
-    private volatile ServerSocket serverSocket;
+    private  ServerSocket serverSocket;
     private ServerThreadAction threadAction;
 
     public void start() throws ServerError {
         try {
             serverSocket = new ServerSocket(PORT);
+            threadAction = new ServerThreadAction(serverSocket);
+            new Thread(threadAction).start();
         } catch (IOException e) {
             throw new ServerError(e);
         }
-        threadAction = new ServerThreadAction(serverSocket);
-        Thread connectionEventExecutor = new Thread(threadAction);
-        connectionEventExecutor.start();
     }
 
     public void stop() throws ServerError {

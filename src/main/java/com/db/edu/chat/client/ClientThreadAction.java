@@ -9,21 +9,26 @@ import java.io.IOException;
 
 public class ClientThreadAction implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientThreadAction.class);
-    private Connection con;
-    public ClientThreadAction(Connection con){
-        this.con=con;
+    private Connection networkConnection;
+    private Connection consoleConnection;
+
+    public ClientThreadAction(Connection networkConnection, Connection consoleConnection){
+        this.networkConnection = networkConnection;
+        this.consoleConnection = consoleConnection;
     }
+
     @Override
     public void run() {
         while(true) {
             try {
-                String message = con.read();
-                if(message == null)
-                    break;
-
-                System.out.println(message);
-            } catch (IOException e) {
-                LOGGER.error("IO exception: ",e);
+                String message = networkConnection.read();
+                if(message != null)
+                    consoleConnection.write(message);
+            }
+            catch (IOException e) {
+                LOGGER.error("IO exception: ", e);
+                networkConnection.close();
+                consoleConnection.close();
 
             }
         }

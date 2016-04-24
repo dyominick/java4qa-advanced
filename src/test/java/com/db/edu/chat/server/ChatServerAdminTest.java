@@ -26,6 +26,7 @@ public class ChatServerAdminTest {
 		} finally {
 			testServer.stop();			
 		}
+		System.out.println("shouldListenPortWhenStarted test finished");
 	}
 
 	@Test(expected=ConnectException.class, timeout=3000)
@@ -37,5 +38,6 @@ public class ChatServerAdminTest {
 
 		Socket testSocket = new Socket(MyProperties.getHost(), Server.PORT);
 		testSocket.close();
+		System.out.println("shouldReleasePortWhenStopped test finished");
 	}
 }

@@ -16,7 +16,7 @@ public class ServerThreadAction implements Runnable{
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerThreadAction.class);
     private volatile boolean isAlive=true;
 
-    private volatile ServerSocket serverSocket;
+    private final ServerSocket serverSocket;
     private final Collection<Connection> connections = new java.util.concurrent.CopyOnWriteArrayList<>();
 
     public ServerThreadAction(ServerSocket serverSocket) {
@@ -31,19 +31,21 @@ public class ServerThreadAction implements Runnable{
     public void run() {
         while(isAlive) {
             try {
-                Connection clientConnection = new RealServerConnection(serverSocket);
-                connections.add(clientConnection);
-                Thread clientConnectionHandler = new Thread(
-                        new ClientConnectionHandler(
-                                clientConnection,
-                                connections,
-                                new ChatBusinessLogic(clientConnection, connections)
-                        )
-                );
-                clientConnectionHandler.setDaemon(true);
-                clientConnectionHandler.start();
+                Connection incomingConnection = new RealServerConnection(serverSocket);
+                if(incomingConnection.accept()) {
+                    connections.add(incomingConnection);
+                    Thread clientConnectionHandler = new Thread(
+                            new ClientConnectionHandler(
+                                    incomingConnection,
+                                    connections,
+                                    new ChatBusinessLogic(incomingConnection, connections)
+                            )
+                    );
+                    clientConnectionHandler.setDaemon(true);
+                    clientConnectionHandler.start();
+                }
             } catch (SocketException e) {
-                LOGGER.debug("Intentionally closed socket: time to stop",e);
+                LOGGER.debug("Intentionally closed socket: time to stop", e);
                 break;
             } catch (IOException e) {
                 LOGGER.error("Network error", e);

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 
 public class RealServerConnection implements Connection {
@@ -13,24 +14,43 @@ public class RealServerConnection implements Connection {
     private static final Logger LOGGER = LoggerFactory.getLogger(RealServerConnection.class);
     private ServerSocket serverSocket;
     private Socket clientSocket;
-    public RealServerConnection(ServerSocket serverSocket) throws IOException {
+    public RealServerConnection(ServerSocket serverSocket) {
         this.serverSocket=serverSocket;
-        accept();
-        LOGGER.info("Client connected: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
     }
 
-    private void accept() throws IOException {
-        clientSocket = serverSocket.accept();
+    @Override
+    public boolean accept() {
+        if(!serverSocket.isClosed()) {
+            try {
+                clientSocket = serverSocket.accept();
+                LOGGER.info("Client connected: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
+            } catch(SocketException e) {
+                LOGGER.info("Server is stopped.");
+                return false;
+            } catch (IOException e) {
+                LOGGER.error("Error while accepting incoming connection: ", e);
+                return false;
+            }
+            return true;
+        }
+        return false;
     }
+
     @Override
     public String read() throws IOException {
-        BufferedReader socketReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        String message = socketReader.readLine();
-        LOGGER.info("Message from client "
-                + clientSocket.getInetAddress() + ":"
-                + clientSocket.getPort() + "> "
-                + message);
-        return  message;
+        if(!clientSocket.isClosed()) {
+            BufferedReader socketReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            String message = socketReader.readLine();
+            LOGGER.info("Message from client "
+                    + clientSocket.getInetAddress() + ":"
+                    + clientSocket.getPort() + "> "
+                    + message);
+            return message;
+        }
+        else {
+            LOGGER.warn("Client socket is closed");
+            return null;
+        }
     }
 
     @Override
@@ -50,14 +70,13 @@ public class RealServerConnection implements Connection {
     }
 
     @Override
-    public void close() throws IOException {
-        clientSocket.close();
-    }
+    public void close()  {
 
-    @Override
-    public String consoleRead() {
-        return null;
-
+        try {
+            clientSocket.close();
+        } catch (IOException e) {
+            LOGGER.error("IO Error: ", e);
+        }
     }
 
 }

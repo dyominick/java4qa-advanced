@@ -10,44 +10,43 @@ import java.util.Collection;
 public class ChatBusinessLogic implements BusinessLogic {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatBusinessLogic.class);
 
-    private Connection connection;
+    private Connection incomingConnection;
     private Collection<Connection> connections;
 
-    public ChatBusinessLogic(Connection realConnection, Collection<Connection> connections) {
-        this.connection = realConnection;
+    public ChatBusinessLogic(Connection incoming, Collection<Connection> connections) {
+        this.incomingConnection = incoming;
         this.connections = connections;
     }
 
     @Override
-    public int handle() throws IOException{
-        String message=connection.read();
-        if(message == null)
+    public int handle() {
+        String message= null;
+        try {
+            message = incomingConnection.read();
+        } catch (IOException e) {
+            LOGGER.error("Error while reading message from incoming connection: ", e);
+            incomingConnection.close();
+        }
+        if(message == null){
+            connections.remove(incomingConnection);
             return -1;
-
-
-
-        for (Connection outConnection : connections) {
-            try {
-
-                if (outConnection == this.connection)
-                    continue;
-
-                outConnection.write(message);
-
-            } catch (IOException e) {
-                LOGGER.error("Error writing message " + message + " to connection " + outConnection + ". Closing socket", e);
-                try {
-                    outConnection.close();
-                } catch (IOException innerE) {
-                    LOGGER.error("Error closing socket ", innerE);
-                }
-
-                LOGGER.error("Removing connection " + outConnection);
-                connections.remove(outConnection);
-            }
-
         }
 
+        for (Connection outcomingConnection : connections) {
+            try {
+
+                if (outcomingConnection == this.incomingConnection)
+                    continue;
+
+                outcomingConnection.write(message);
+
+            } catch (IOException e) {
+                LOGGER.error("Error writing message " + message + " to connection " + outcomingConnection + ". Closing socket", e);
+                outcomingConnection.close();
+                LOGGER.error("Removing connection " + outcomingConnection);
+                connections.remove(outcomingConnection);
+            }
+        }
         return 0;
     }
 }
