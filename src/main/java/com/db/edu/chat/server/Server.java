@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 public class Server {
 	private static final Logger logger = LoggerFactory.getLogger(Server.class);
 	public static final int PORT = 4498;
-	
 	private final Collection<Connection> connections = new java.util.concurrent.CopyOnWriteArrayList<>();
 	private volatile ServerSocket serverSocket;
 
@@ -21,11 +20,9 @@ public class Server {
 		@Override
 		public void run() {
 			while(!isInterrupted()) {
-
 				try {
 					Connection clientConnection = new RealConnection(serverSocket);
 					connections.add(clientConnection);
-
 					Thread clientConnectionHandler = new Thread(
 						new ClientConnectionHandler(
 								clientConnection,
@@ -45,10 +42,6 @@ public class Server {
 			}
 		}
 	};
-
-	public Server() throws IOException {
-
-	}
 
 	public void start() throws ServerError {
 		try {
@@ -72,10 +65,6 @@ public class Server {
 	}
 	
 	public static void main(String... args) throws ServerError {
-		try {
-			new Server().start();
-		} catch (IOException e) {
-			logger.error("Couldn't initialize properties: ",e);
-		}
+		new Server().start();
 	}
 }
