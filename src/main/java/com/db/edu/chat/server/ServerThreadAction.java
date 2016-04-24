@@ -12,14 +12,14 @@ import java.net.SocketException;
 import java.util.Collection;
 
 
-public class ConnectionEvent implements Runnable{
-    private static final Logger logger = LoggerFactory.getLogger(ConnectionEvent.class);
+public class ServerThreadAction implements Runnable{
+    private static final Logger logger = LoggerFactory.getLogger(ServerThreadAction.class);
     private volatile boolean isAlive=true;
 
     private volatile ServerSocket serverSocket;
     private final Collection<Connection> connections = new java.util.concurrent.CopyOnWriteArrayList<>();
 
-    public ConnectionEvent(ServerSocket serverSocket) {
+    public ServerThreadAction(ServerSocket serverSocket) {
         this.serverSocket = serverSocket;
     }
 

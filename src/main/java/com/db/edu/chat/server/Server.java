@@ -9,7 +9,7 @@ public class Server {
 	private static final Logger logger = LoggerFactory.getLogger(Server.class);
 	public static final int PORT = 4498;
 	private volatile ServerSocket serverSocket;
-	private ConnectionEvent conEvent;
+	private ServerThreadAction threadAction;
 	private Thread connectionEventExecutor;
 
 	public void start() throws ServerError {
@@ -18,14 +18,14 @@ public class Server {
 		} catch (IOException e) {
 			throw new ServerError(e);
 		}
-		conEvent = new ConnectionEvent(serverSocket);
-		connectionEventExecutor = new Thread(conEvent);
+		threadAction = new ServerThreadAction(serverSocket);
+		connectionEventExecutor = new Thread(threadAction);
 		connectionEventExecutor.start();
 	}
 	
 	public void stop() throws ServerError {
-		if(conEvent!=null)
-		    conEvent.requestStop();
+		if(threadAction !=null)
+		    threadAction.requestStop();
 		
 		try {
 			Thread.sleep(1000);
