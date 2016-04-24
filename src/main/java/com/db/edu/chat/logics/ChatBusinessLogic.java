@@ -21,14 +21,16 @@ public class ChatBusinessLogic implements BusinessLogic {
     @Override
     public int handle() throws IOException{
         String message=connection.read();
-        if(message == null) return -1;
+        if(message == null)
+            return -1;
 
 
 
         for (Connection outConnection : connections) {
             try {
 
-                if (outConnection == this.connection) continue;
+                if (outConnection == this.connection)
+                    continue;
 
                 outConnection.write(message);
 

@@ -18,7 +18,8 @@ public class ClientThreadAction implements Runnable {
         while(true) {
             try {
                 String message = con.read();
-                if(message == null) break;
+                if(message == null)
+                    break;
 
                 System.out.println(message);
             } catch (IOException e) {

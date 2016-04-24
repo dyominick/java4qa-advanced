@@ -29,7 +29,8 @@ public class ClientConnectionHandler implements Runnable {
     public void run() {
         while(true) {
             try {
-                if(-1==businessLogic.handle()) break;
+                if(-1==businessLogic.handle())
+                    break;
             } catch (IOException e) {
                 logger.error("Network reading message from socket " + connection, e);
                 try {
