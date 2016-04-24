@@ -38,10 +38,12 @@ public class RealConnection implements Connection {
 
     @Override
     public void write (String message) throws IOException {
-        if (clientSocket.isClosed()) return;
-        if (!clientSocket.isBound()) return;
-        if (!clientSocket.isConnected()) return;
-
+        if (clientSocket.isClosed())
+            return;
+        if (!clientSocket.isBound())
+            return;
+        if (!clientSocket.isConnected())
+            return;
         logger.info("Writing message " + message + " to socket " + clientSocket);
 
         BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
