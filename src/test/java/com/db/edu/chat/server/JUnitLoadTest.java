@@ -2,6 +2,7 @@ package com.db.edu.chat.server;
 
 import static org.junit.Assume.assumeNotNull;
 
+import com.db.edu.chat.common.MyProperties;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class JUnitLoadTest {
 
         Socket readerClientSocket = null;
         try {
-            readerClientSocket = new Socket(Server.HOST, Server.PORT);
+            readerClientSocket = new Socket(MyProperties.getHost(), Server.PORT);
         } catch (IOException e) {
             logger.error("Can't connect to server: ", e);
         }
@@ -58,7 +59,7 @@ public class JUnitLoadTest {
         });
         readerClient.start();
 
-        final Socket writerClientSocket = new Socket(Server.HOST, Server.PORT);
+        final Socket writerClientSocket = new Socket(MyProperties.getHost(), Server.PORT);
         final BufferedWriter writerClientSocketWriter = new BufferedWriter(new OutputStreamWriter(writerClientSocket.getOutputStream()));
         socketWrite(writerClientSocketWriter, sentMessage);
 

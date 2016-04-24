@@ -1,6 +1,7 @@
 package com.db.edu.chat.client;
 
 import com.db.edu.chat.common.Connection;
+import com.db.edu.chat.common.MyProperties;
 import com.db.edu.chat.server.Server;
 
 import java.io.*;
@@ -15,7 +16,7 @@ public class RealClientConnection implements Connection {
     final BufferedReader socketReader;
     final BufferedReader consoleReader;
     public RealClientConnection() throws IOException {
-        socket = new Socket(Server.HOST, Server.PORT);
+        socket = new Socket(MyProperties.getHost(), Server.PORT);
         socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         consoleReader = new BufferedReader(new InputStreamReader(System.in));

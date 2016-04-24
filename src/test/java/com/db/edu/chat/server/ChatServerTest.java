@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import com.db.edu.chat.common.MyProperties;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -30,15 +31,15 @@ public class ChatServerTest {
 		testServer.start();
 		sleep(500);
 		
-		socket1 = new Socket(Server.HOST, Server.PORT);
+		socket1 = new Socket(MyProperties.getHost(), Server.PORT);
 		socketWriter1 = new BufferedWriter(new OutputStreamWriter(socket1.getOutputStream()));
 		socketReader1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
 		
-		socket2 = new Socket(Server.HOST, Server.PORT);
+		socket2 = new Socket(MyProperties.getHost(), Server.PORT);
 		socketWriter2 = new BufferedWriter(new OutputStreamWriter(socket2.getOutputStream()));
 		socketReader2 = new BufferedReader(new InputStreamReader(socket2.getInputStream()));
 		
-		socket3 = new Socket(Server.HOST, Server.PORT);
+		socket3 = new Socket(MyProperties.getHost(), Server.PORT);
 		socketWriter3 = new BufferedWriter(new OutputStreamWriter(socket3.getOutputStream()));
 		socketReader3 = new BufferedReader(new InputStreamReader(socket3.getInputStream()));
 		

@@ -1,33 +1,33 @@
 package com.db.edu.chat.server;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Collection;
+import java.util.Properties;
 
 import com.db.edu.chat.common.Connection;
+import com.db.edu.chat.common.MyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Server {
 	private static final Logger logger = LoggerFactory.getLogger(Server.class);
-	
-	public static final String HOST = "127.0.0.1";
 	public static final int PORT = 4498;
 	
 	private final Collection<Connection> connections = new java.util.concurrent.CopyOnWriteArrayList<>();
 	private volatile ServerSocket serverSocket;
-	private volatile boolean stopFlag;
+
 
 	private Thread connectionEventLoop = new Thread() {
 		@Override
 		public void run() {
 			while(!isInterrupted()) {
+
 				try {
-
 					Connection clientConnection = new RealConnection(serverSocket);
-
-
 					connections.add(clientConnection);
 
 					Thread clientConnectionHandler = new Thread(
@@ -49,7 +49,11 @@ public class Server {
 			}
 		}
 	};
-	
+
+	public Server() throws IOException {
+
+	}
+
 	public void start() throws ServerError {
 		try {
 			serverSocket = new ServerSocket(PORT);
@@ -72,6 +76,10 @@ public class Server {
 	}
 	
 	public static void main(String... args) throws ServerError {
-		new Server().start();
+		try {
+			new Server().start();
+		} catch (IOException e) {
+			logger.error("Couldn't initialize properties: ",e);
+		}
 	}
 }

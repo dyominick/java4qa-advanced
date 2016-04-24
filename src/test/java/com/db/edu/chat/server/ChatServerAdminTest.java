@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
 
+import com.db.edu.chat.common.MyProperties;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class ChatServerAdminTest {
 		sleep(300);
 		
 		try {
-			new Socket(Server.HOST, Server.PORT);
+			new Socket(MyProperties.getHost(), Server.PORT);
 		} finally {
 			testServer.stop();			
 		}
@@ -34,7 +35,7 @@ public class ChatServerAdminTest {
 		sleep(300);
 		testServer.stop();
 
-		Socket testSocket = new Socket(Server.HOST, Server.PORT);
+		Socket testSocket = new Socket(MyProperties.getHost(), Server.PORT);
 		testSocket.close();
 	}
 }
