@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Server {
-    private static final Logger logger = LoggerFactory.getLogger(Server.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Server.class);
     public static final int PORT = 4498;
     private volatile ServerSocket serverSocket;
     private ServerThreadAction threadAction;
@@ -30,7 +30,7 @@ public class Server {
             Thread.sleep(1000);
         }
         catch (InterruptedException e1) {
-            logger.warn("Server was interrupted: ",e1);
+            LOGGER.warn("Server was interrupted: ",e1);
         }
 
         try {

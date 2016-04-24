@@ -11,7 +11,7 @@ import java.util.Properties;
 
 
 public class MyProperties {
-    private static final Logger logger = LoggerFactory.getLogger(MyProperties.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyProperties.class);
     private static String host;
     static InputStream propertiesStream;
 
@@ -38,13 +38,13 @@ public class MyProperties {
 
 
        } catch (Exception e) {
-           logger.error("Properties not found: ", e);
+           LOGGER.error("Properties not found: ", e);
        } finally {
            try {
                if (null!=propertiesStream)
                    propertiesStream.close();
            } catch (IOException e) {
-               logger.error("Error while closing properties stream: ",e);
+               LOGGER.error("Error while closing properties stream: ",e);
            }
        }
    }

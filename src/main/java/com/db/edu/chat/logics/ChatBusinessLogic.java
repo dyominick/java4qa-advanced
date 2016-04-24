@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.Collection;
 
 public class ChatBusinessLogic implements BusinessLogic {
-    private static final Logger logger = LoggerFactory.getLogger(ChatBusinessLogic.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatBusinessLogic.class);
 
     private Connection connection;
     private Collection<Connection> connections;
@@ -35,14 +35,14 @@ public class ChatBusinessLogic implements BusinessLogic {
                 outConnection.write(message);
 
             } catch (IOException e) {
-                logger.error("Error writing message " + message + " to connection " + outConnection + ". Closing socket", e);
+                LOGGER.error("Error writing message " + message + " to connection " + outConnection + ". Closing socket", e);
                 try {
                     outConnection.close();
                 } catch (IOException innerE) {
-                    logger.error("Error closing socket ", innerE);
+                    LOGGER.error("Error closing socket ", innerE);
                 }
 
-                logger.error("Removing connection " + outConnection);
+                LOGGER.error("Removing connection " + outConnection);
                 connections.remove(outConnection);
             }
 

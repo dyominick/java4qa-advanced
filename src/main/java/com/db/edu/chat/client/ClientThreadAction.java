@@ -8,7 +8,7 @@ import java.io.IOException;
 
 
 public class ClientThreadAction implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(ClientThreadAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientThreadAction.class);
     private Connection con;
     public ClientThreadAction(Connection con){
         this.con=con;
@@ -23,7 +23,7 @@ public class ClientThreadAction implements Runnable {
 
                 System.out.println(message);
             } catch (IOException e) {
-                logger.error("IO exception: ",e);
+                LOGGER.error("IO exception: ",e);
 
             }
         }

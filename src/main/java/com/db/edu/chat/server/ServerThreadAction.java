@@ -13,7 +13,7 @@ import java.util.Collection;
 
 
 public class ServerThreadAction implements Runnable{
-    private static final Logger logger = LoggerFactory.getLogger(ServerThreadAction.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServerThreadAction.class);
     private volatile boolean isAlive=true;
 
     private volatile ServerSocket serverSocket;
@@ -43,10 +43,10 @@ public class ServerThreadAction implements Runnable{
                 clientConnectionHandler.setDaemon(true);
                 clientConnectionHandler.start();
             } catch (SocketException e) {
-                logger.debug("Intentionally closed socket: time to stop",e);
+                LOGGER.debug("Intentionally closed socket: time to stop",e);
                 break;
             } catch (IOException e) {
-                logger.error("Network error", e);
+                LOGGER.error("Network error", e);
                 break;
             }
         }

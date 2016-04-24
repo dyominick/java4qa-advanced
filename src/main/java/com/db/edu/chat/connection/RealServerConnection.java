@@ -10,13 +10,13 @@ import java.net.Socket;
 
 public class RealServerConnection implements Connection {
 
-    private static final Logger logger = LoggerFactory.getLogger(RealServerConnection.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RealServerConnection.class);
     private ServerSocket serverSocket;
     private Socket clientSocket;
     public RealServerConnection(ServerSocket serverSocket) throws IOException {
         this.serverSocket=serverSocket;
         accept();
-        logger.info("Client connected: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
+        LOGGER.info("Client connected: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
     }
 
     private void accept() throws IOException {
@@ -26,7 +26,7 @@ public class RealServerConnection implements Connection {
     public String read() throws IOException {
         BufferedReader socketReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         String message = socketReader.readLine();
-        logger.info("Message from client "
+        LOGGER.info("Message from client "
                 + clientSocket.getInetAddress() + ":"
                 + clientSocket.getPort() + "> "
                 + message);
@@ -41,7 +41,7 @@ public class RealServerConnection implements Connection {
             return;
         if (!clientSocket.isConnected())
             return;
-        logger.info("Writing message " + message + " to socket " + clientSocket);
+        LOGGER.info("Writing message " + message + " to socket " + clientSocket);
 
         BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
         socketWriter.write(message);

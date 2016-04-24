@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ClientConnectionHandler implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(ClientConnectionHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ClientConnectionHandler.class);
 
     private final Connection connection;
     private final Collection<Connection> realConnections;
@@ -32,13 +32,13 @@ public class ClientConnectionHandler implements Runnable {
                 if(-1==businessLogic.handle())
                     break;
             } catch (IOException e) {
-                logger.error("Network reading message from socket " + connection, e);
+                LOGGER.error("Network reading message from socket " + connection, e);
                 try {
                     connection.close();
                 } catch (IOException innerE) {
-                    logger.debug("Error closing socket ", innerE);
+                    LOGGER.debug("Error closing socket ", innerE);
                 }
-                logger.error("Removing socket and stop this handler thread");
+                LOGGER.error("Removing socket and stop this handler thread");
                 realConnections.remove(connection);
                 return;
             }
