@@ -8,17 +8,17 @@ import com.db.edu.chat.connection.RealClientConnection;
 
 public class Client {
 
-	private Client() {
-	}
+    private Client() {
+    }
 
-	public static void main(String... args) throws IOException {
-		Connection con = new RealClientConnection();
+    public static void main(String... args) throws IOException {
+        Connection con = new RealClientConnection();
 
-		Thread thread = new Thread(new ClientThreadAction(con)) ;
+        Thread thread = new Thread(new ClientThreadAction(con)) ;
         thread.start();
 
-		while(true) {
-			con.write(con.consoleRead());
-		}
-	}
+        while(true) {
+            con.write(con.consoleRead());
+        }
+    }
 }
