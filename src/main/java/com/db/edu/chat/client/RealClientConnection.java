@@ -26,6 +26,8 @@ public class RealClientConnection implements Connection {
     public String read() throws IOException {
         return  socketReader.readLine();
     }
+
+    @Override
     public String consoleRead () throws IOException {
         return consoleReader.readLine();
     }

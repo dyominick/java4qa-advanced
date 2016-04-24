@@ -55,7 +55,12 @@ public class Server {
 	public void stop() throws ServerError {
 		connectionEventLoop.interrupt();
 		
-		try { Thread.sleep(1000); } catch (InterruptedException e1) { } 
+		try {
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e1) {
+			logger.warn("Server was interrupted: ",e1);
+		}
 		
 		try {
 			serverSocket.close();

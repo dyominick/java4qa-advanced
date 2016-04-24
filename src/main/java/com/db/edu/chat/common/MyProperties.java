@@ -41,7 +41,6 @@ public class MyProperties {
 
        } catch (Exception e) {
            logger.error("Properties not found: ", e);
-           System.out.println("Exception: " + e);
        } finally {
            try {
                propertiesStream.close();
