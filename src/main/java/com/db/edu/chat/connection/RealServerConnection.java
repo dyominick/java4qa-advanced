@@ -38,7 +38,7 @@ public class RealServerConnection implements Connection {
 
     @Override
     public String read() throws IOException {
-        if(!clientSocket.isClosed()) {
+        if(null!=clientSocket&&!clientSocket.isClosed()) {
             BufferedReader socketReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String message = socketReader.readLine();
             LOGGER.info("Message from client "
