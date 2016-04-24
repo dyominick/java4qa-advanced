@@ -2,46 +2,15 @@ package com.db.edu.chat.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.SocketException;
-import java.util.Collection;
-
-import com.db.edu.chat.common.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Server {
 	private static final Logger logger = LoggerFactory.getLogger(Server.class);
 	public static final int PORT = 4498;
-	private final Collection<Connection> connections = new java.util.concurrent.CopyOnWriteArrayList<>();
 	private volatile ServerSocket serverSocket;
-
-
-	private Thread connectionEventLoop = new Thread() {
-		@Override
-		public void run() {
-			while(!isInterrupted()) {
-				try {
-					Connection clientConnection = new RealConnection(serverSocket);
-					connections.add(clientConnection);
-					Thread clientConnectionHandler = new Thread(
-						new ClientConnectionHandler(
-								clientConnection,
-								connections,
-							new ChatBusinessLogic(clientConnection, connections)
-						)
-					);
-					clientConnectionHandler.setDaemon(true);
-					clientConnectionHandler.start();
-				} catch (SocketException e) {
-					logger.debug("Intentionally closed socket: time to stop",e);
-					break;
-				} catch (IOException e) {
-					logger.error("Network error", e);
-					break;
-				}
-			}
-		}
-	};
+	private ConnectionEvent conEvent;
+	private Thread connectionEventLoop;
 
 	public void start() throws ServerError {
 		try {
@@ -49,11 +18,14 @@ public class Server {
 		} catch (IOException e) {
 			throw new ServerError(e);
 		}
+		conEvent = new ConnectionEvent(serverSocket);
+		connectionEventLoop = new Thread(conEvent);
 		connectionEventLoop.start();
 	}
 	
 	public void stop() throws ServerError {
-		connectionEventLoop.interrupt();
+		if(conEvent!=null)
+		    conEvent.requestThreadStop();
 		
 		try {
 			Thread.sleep(1000);

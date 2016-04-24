@@ -9,9 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-/**
- * Created by apple on 24.04.16.
- */
+
 public class MyProperties {
     private static final Logger logger = LoggerFactory.getLogger(MyProperties.class);
     private static String host;
