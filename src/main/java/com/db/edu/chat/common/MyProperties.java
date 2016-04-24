@@ -1,6 +1,8 @@
 package com.db.edu.chat.common;
 
 import com.db.edu.chat.server.Server;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,13 +13,18 @@ import java.util.Properties;
  * Created by apple on 24.04.16.
  */
 public class MyProperties {
+    private static final Logger logger = LoggerFactory.getLogger(MyProperties.class);
+    private static String host;
+    static InputStream propertiesStream;
+
+    private MyProperties() {
+    }
+
     public static String getHost() {
         return host;
     }
 
-    private static String host;
 
-    static InputStream propertiesStream;
    static{
        try {
            Properties prop = new Properties();
@@ -33,12 +40,13 @@ public class MyProperties {
 
 
        } catch (Exception e) {
+           logger.error("Properties not found: ", e);
            System.out.println("Exception: " + e);
        } finally {
            try {
                propertiesStream.close();
            } catch (IOException e) {
-               e.printStackTrace();
+               logger.error("Error while closing properties stream: ",e);
            }
        }
    }
