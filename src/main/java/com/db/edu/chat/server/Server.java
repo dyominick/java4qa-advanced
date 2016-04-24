@@ -10,7 +10,7 @@ public class Server {
 	public static final int PORT = 4498;
 	private volatile ServerSocket serverSocket;
 	private ConnectionEvent conEvent;
-	private Thread connectionEventLoop;
+	private Thread connectionEventExecutor;
 
 	public void start() throws ServerError {
 		try {
@@ -19,13 +19,13 @@ public class Server {
 			throw new ServerError(e);
 		}
 		conEvent = new ConnectionEvent(serverSocket);
-		connectionEventLoop = new Thread(conEvent);
-		connectionEventLoop.start();
+		connectionEventExecutor = new Thread(conEvent);
+		connectionEventExecutor.start();
 	}
 	
 	public void stop() throws ServerError {
 		if(conEvent!=null)
-		    conEvent.requestThreadStop();
+		    conEvent.requestStop();
 		
 		try {
 			Thread.sleep(1000);

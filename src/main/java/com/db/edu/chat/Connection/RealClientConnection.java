@@ -1,6 +1,6 @@
-package com.db.edu.chat.client;
+package com.db.edu.chat.Connection;
 
-import com.db.edu.chat.common.Connection;
+import com.db.edu.chat.Connection.Connection;
 import com.db.edu.chat.common.MyProperties;
 import com.db.edu.chat.server.Server;
 

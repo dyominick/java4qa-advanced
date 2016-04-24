@@ -2,7 +2,8 @@ package com.db.edu.chat.client;
 
 
 import java.io.IOException;
-import com.db.edu.chat.common.Connection;
+import com.db.edu.chat.Connection.Connection;
+import com.db.edu.chat.Connection.RealClientConnection;
 
 
 public class Client {

@@ -1,4 +1,4 @@
-package com.db.edu.chat.common;
+package com.db.edu.chat.Connection;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 

@@ -1,6 +1,8 @@
 package com.db.edu.chat.server;
 
-import com.db.edu.chat.common.Connection;
+import com.db.edu.chat.Connection.Connection;
+import com.db.edu.chat.Connection.RealServerConnection;
+import com.db.edu.chat.Logics.ChatBusinessLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,7 @@ public class ConnectionEvent implements Runnable{
         this.serverSocket = serverSocket;
     }
 
-    public void requestThreadStop() {
+    public void requestStop() {
         isAlive = false;
     }
 
@@ -29,7 +31,7 @@ public class ConnectionEvent implements Runnable{
     public void run() {
         while(isAlive) {
             try {
-                Connection clientConnection = new RealConnection(serverSocket);
+                Connection clientConnection = new RealServerConnection(serverSocket);
                 connections.add(clientConnection);
                 Thread clientConnectionHandler = new Thread(
                         new ClientConnectionHandler(

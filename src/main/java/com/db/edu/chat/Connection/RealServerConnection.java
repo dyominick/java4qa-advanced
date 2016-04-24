@@ -1,6 +1,5 @@
-package com.db.edu.chat.server;
+package com.db.edu.chat.Connection;
 
-import com.db.edu.chat.common.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,12 +10,12 @@ import java.net.Socket;
 /**
  * Created by Student on 22.04.2016.
  */
-public class RealConnection implements Connection {
+public class RealServerConnection implements Connection {
 
-    private static final Logger logger = LoggerFactory.getLogger(RealConnection.class);
+    private static final Logger logger = LoggerFactory.getLogger(RealServerConnection.class);
     private ServerSocket serverSocket;
     private Socket clientSocket;
-    public RealConnection(ServerSocket serverSocket) throws IOException {
+    public RealServerConnection(ServerSocket serverSocket) throws IOException {
         this.serverSocket=serverSocket;
         accept();
         logger.info("Client connected: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
