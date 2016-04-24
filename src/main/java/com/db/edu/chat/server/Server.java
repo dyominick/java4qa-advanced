@@ -1,15 +1,11 @@
 package com.db.edu.chat.server;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Collection;
-import java.util.Properties;
 
 import com.db.edu.chat.common.Connection;
-import com.db.edu.chat.common.MyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
