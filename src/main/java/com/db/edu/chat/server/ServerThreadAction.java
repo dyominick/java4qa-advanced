@@ -1,8 +1,8 @@
 package com.db.edu.chat.server;
 
-import com.db.edu.chat.Connection.Connection;
-import com.db.edu.chat.Connection.RealServerConnection;
-import com.db.edu.chat.Logics.ChatBusinessLogic;
+import com.db.edu.chat.connection.Connection;
+import com.db.edu.chat.connection.RealServerConnection;
+import com.db.edu.chat.logics.ChatBusinessLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,6 +1,6 @@
-package com.db.edu.chat.Logics;
+package com.db.edu.chat.logics;
 
-import com.db.edu.chat.Connection.Connection;
+import com.db.edu.chat.connection.Connection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,14 +33,14 @@ public class ChatBusinessLogic implements BusinessLogic {
                 outConnection.write(message);
 
             } catch (IOException e) {
-                logger.error("Error writing message " + message + " to Connection " + outConnection + ". Closing socket", e);
+                logger.error("Error writing message " + message + " to connection " + outConnection + ". Closing socket", e);
                 try {
                     outConnection.close();
                 } catch (IOException innerE) {
                     logger.error("Error closing socket ", innerE);
                 }
 
-                logger.error("Removing Connection " + outConnection);
+                logger.error("Removing connection " + outConnection);
                 connections.remove(outConnection);
             }
 
