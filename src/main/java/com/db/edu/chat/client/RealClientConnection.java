@@ -36,9 +36,4 @@ public class RealClientConnection implements Connection {
         socketWriter.newLine();
         socketWriter.flush();
     }
-
-    @Override
-    public void close() throws IOException {
-
-    }
 }
