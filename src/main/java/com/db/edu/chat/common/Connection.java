@@ -1,5 +1,7 @@
 package com.db.edu.chat.common;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.io.IOException;
 
 /**
@@ -8,6 +10,11 @@ import java.io.IOException;
 public interface Connection {
     public String read() throws IOException;
     public void write (String message) throws IOException;
-    default void close() throws IOException {};
-    String consoleRead() throws IOException;
+    default void close() throws IOException {
+        return;
+    }
+
+    default String consoleRead() throws IOException {
+        return null;
+    }
 }

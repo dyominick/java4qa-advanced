@@ -13,7 +13,8 @@ public class Client {
 		Connection con = new RealClientConnection();
 
 		Thread thread = new Thread(new ClientThreadAction(con)) ;
-		thread.start();
+        thread.start();
+
 		
 		while(true) {
 			con.write(con.consoleRead());
