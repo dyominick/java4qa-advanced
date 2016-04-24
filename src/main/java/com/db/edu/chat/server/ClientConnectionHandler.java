@@ -3,8 +3,8 @@ package com.db.edu.chat.server;
 import java.io.IOException;
 import java.util.Collection;
 
-import com.db.edu.chat.connection.Connection;
-import com.db.edu.chat.logics.BusinessLogic;
+import com.db.edu.chat.Connection.Connection;
+import com.db.edu.chat.Logics.BusinessLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

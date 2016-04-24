@@ -1,4 +1,4 @@
-package com.db.edu.chat.connection;
+package com.db.edu.chat.Connection;
 
 import com.db.edu.chat.common.MyProperties;
 import com.db.edu.chat.server.Server;

@@ -1,4 +1,4 @@
-package com.db.edu.chat.connection;
+package com.db.edu.chat.Connection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

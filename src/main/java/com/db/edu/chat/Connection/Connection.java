@@ -1,4 +1,4 @@
-package com.db.edu.chat.connection;
+package com.db.edu.chat.Connection;
 
 import java.io.IOException;
 
