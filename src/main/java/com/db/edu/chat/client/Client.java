@@ -20,14 +20,21 @@ public class Client {
         Connection networkConnection = new RealClientConnection();
         Connection consoleConnection = new ConsoleConnection();
 
-        if(!networkConnection.accept()){
-            LOGGER.error("Network connection to server was not established. Shutting down.");
-            return;
+        try {
+            networkConnection.accept();
         }
-        if(consoleConnection.accept()){
-            LOGGER.error("Problems with the console. See console log for details.");
-            return;
+        catch (IOException e){
+                LOGGER.error("Network connection to server was not established: ", e);
+                return;
+            }
+        try {
+            consoleConnection.accept();
         }
+        catch(IOException e){
+                LOGGER.error("Problems with the console: ", e);
+                return;
+        }
+
 
         Thread thread = new Thread(new ClientThreadAction(networkConnection,consoleConnection)) ;
         thread.start();

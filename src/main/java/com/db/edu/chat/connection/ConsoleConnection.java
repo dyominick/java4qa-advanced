@@ -38,15 +38,9 @@ public class ConsoleConnection implements Connection{
     }
 
     @Override
-    public boolean accept() {
-        try {
-            consoleReader = new BufferedReader(new InputStreamReader(System.in));
-            consoleWriter = new BufferedWriter(new OutputStreamWriter(System.out));
-        }
-        catch (Exception e){
-            LOGGER.error("Console output is inaccessible: ", e);
-            return false;
-        }
-        return true;
+    public void accept() throws IOException{
+
+        consoleReader = new BufferedReader(new InputStreamReader(System.in));
+        consoleWriter = new BufferedWriter(new OutputStreamWriter(System.out));
     }
 }

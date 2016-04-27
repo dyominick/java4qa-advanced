@@ -19,20 +19,24 @@ public class ChatBusinessLogic implements BusinessLogic {
     }
 
     @Override
-    public int handle() {
-        String message= null;
+    public void handle() throws ClientDisconnectedException, FailedConnectionException{
+
+        String message;
         try {
             message = incomingConnection.read();
         } catch (IOException e) {
-            LOGGER.error("Error while reading message from incoming connection: ", e);
-            incomingConnection.close();
+            throw new FailedConnectionException(e);
         }
         if(message == null){
-            connections.remove(incomingConnection);
-            return -1;
+            String nullMessageWarning = "Client "+incomingConnection + "is disconnected.";
+            notifyAll(nullMessageWarning);
+            throw  new ClientDisconnectedException(nullMessageWarning);
         }
+        notifyAll(message);
+    }
 
-        for (Connection outcomingConnection : connections) {
+    private void notifyAll(String message) throws FailedConnectionException{
+        for (Connection outcomingConnection : connections)
             try {
 
                 if (outcomingConnection == this.incomingConnection)
@@ -42,11 +46,15 @@ public class ChatBusinessLogic implements BusinessLogic {
 
             } catch (IOException e) {
                 LOGGER.error("Error writing message " + message + " to connection " + outcomingConnection + ". Closing socket", e);
+                try {
+                    incomingConnection.write("Client disconnected " + outcomingConnection);
+                } catch (IOException e1) {
+                    throw new FailedConnectionException(e1);
+                }
                 outcomingConnection.close();
-                LOGGER.error("Removing connection " + outcomingConnection);
                 connections.remove(outcomingConnection);
+                throw new FailedConnectionException(e);
             }
-        }
-        return 0;
+
     }
 }

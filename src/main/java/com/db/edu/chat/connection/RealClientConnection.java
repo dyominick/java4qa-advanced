@@ -41,16 +41,9 @@ public class RealClientConnection implements Connection {
     }
 
     @Override
-    public boolean accept() {
-        try {
-            socket = new Socket(MyProperties.getHost(), Server.PORT);
-            socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        }
-        catch (IOException e){
-            LOGGER.error("Server is unavailable: ", e);
-            return false;
-        }
-        return true;
+    public void accept() throws IOException{
+        socket = new Socket(MyProperties.getHost(), Server.PORT);
+        socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+        socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 }

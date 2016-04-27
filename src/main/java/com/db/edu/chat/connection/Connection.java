@@ -11,6 +11,6 @@ public interface Connection {
 
     void close();
 
-    boolean accept();
+    void accept() throws IOException;
 
 }

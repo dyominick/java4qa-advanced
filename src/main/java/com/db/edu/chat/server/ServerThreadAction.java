@@ -32,20 +32,20 @@ public class ServerThreadAction implements Runnable{
         while(isAlive) {
             try {
                 Connection incomingConnection = new RealServerConnection(serverSocket);
-                if(incomingConnection.accept()) {
-                    connections.add(incomingConnection);
-                    Thread clientConnectionHandler = new Thread(
-                            new ClientConnectionHandler(
-                                    incomingConnection,
-                                    connections,
-                                    new ChatBusinessLogic(incomingConnection, connections)
-                            )
-                    );
-                    clientConnectionHandler.setDaemon(true);
-                    clientConnectionHandler.start();
-                }
+                incomingConnection.accept();
+                connections.add(incomingConnection);
+                Thread clientConnectionHandler = new Thread(
+                        new ClientConnectionHandler(
+                                incomingConnection,
+                                connections,
+                                new ChatBusinessLogic(incomingConnection, connections)
+                        )
+                );
+                clientConnectionHandler.setDaemon(true);
+                clientConnectionHandler.start();
+
             } catch (SocketException e) {
-                LOGGER.debug("Intentionally closed socket: time to stop", e);
+                LOGGER.debug("Intentionally closed socket: time to stop");
                 break;
             } catch (IOException e) {
                 LOGGER.error("Network error", e);

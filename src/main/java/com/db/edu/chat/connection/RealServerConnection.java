@@ -19,21 +19,12 @@ public class RealServerConnection implements Connection {
     }
 
     @Override
-    public boolean accept() {
+    public void accept() throws IOException{
         if(!serverSocket.isClosed()) {
-            try {
-                clientSocket = serverSocket.accept();
-                LOGGER.info("Client connected: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
-            } catch(SocketException e) {
-                LOGGER.info("Server is stopped.");
-                return false;
-            } catch (IOException e) {
-                LOGGER.error("Error while accepting incoming connection: ", e);
-                return false;
-            }
-            return true;
+            clientSocket = serverSocket.accept();
+            LOGGER.info("Client connected: " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
         }
-        return false;
+
     }
 
     @Override

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collection;
 
 import com.db.edu.chat.connection.Connection;
+import com.db.edu.chat.logics.FailedConnectionException;
+import com.db.edu.chat.logics.ClientDisconnectedException;
 import com.db.edu.chat.logics.BusinessLogic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,16 +31,19 @@ public class ClientConnectionHandler implements Runnable {
     public void run() {
         while(true) {
             try {
-                if(-1==businessLogic.handle())
-                    break;
-            } catch (IOException e) {
-                LOGGER.error("Network reading message from socket " + connection, e);
-                connection.close();
-                LOGGER.error("Removing socket and stop this handler thread");
-                realConnections.remove(connection);
-                return;
+                businessLogic.handle();
             }
-
+            catch (ClientDisconnectedException e) {
+                LOGGER.warn("Null message received");
+                realConnections.remove(connection);
+                break;
+            }
+            catch (FailedConnectionException e) {
+                LOGGER.error("Connection error with " + connection + ": ", e);
+                realConnections.remove(connection);
+                connection.close();
+                break;
+            }
         }
     }
 }
