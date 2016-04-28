@@ -38,7 +38,7 @@ public class ServerThreadAction implements Runnable{
                         new ClientConnectionHandler(
                                 incomingConnection,
                                 connections,
-                                new ChatBusinessLogic(incomingConnection, connections)
+                                new ChatBusinessLogic(connections)
                         )
                 );
                 clientConnectionHandler.setDaemon(true);

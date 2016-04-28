@@ -7,13 +7,14 @@ import java.io.IOException;
 import java.net.ConnectException;
 import java.net.Socket;
 
-import com.db.edu.chat.common.MyProperties;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class ChatServerAdminTest {
 	private Server testServer;
+	@Value("${host}")
+	String host;
 	
 	@Test(timeout=3000)
 	public void shouldListenPortWhenStarted() throws ServerError, IOException {
@@ -22,7 +23,7 @@ public class ChatServerAdminTest {
 		sleep(300);
 		
 		try {
-			new Socket(MyProperties.getHost(), Server.PORT);
+			new Socket(host, Server.PORT);
 		} finally {
 			testServer.stop();			
 		}
@@ -36,7 +37,7 @@ public class ChatServerAdminTest {
 		sleep(300);
 		testServer.stop();
 
-		Socket testSocket = new Socket(MyProperties.getHost(), Server.PORT);
+		Socket testSocket = new Socket(host, Server.PORT);
 		testSocket.close();
 		System.out.println("shouldReleasePortWhenStopped test finished");
 	}

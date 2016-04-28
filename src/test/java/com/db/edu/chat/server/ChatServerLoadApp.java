@@ -7,18 +7,21 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import com.db.edu.chat.common.MyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class ChatServerLoadApp {
     private static final Logger logger = LoggerFactory.getLogger(ChatServerLoadApp.class);
 
+	@Value("${host}")
+	static String host;
+
 	public static void main(String... args) throws IOException {
 		while(true) {
 			ChatServerLoadApp.sleep(1);
-            final Socket socket = new Socket(MyProperties.getHost(), Server.PORT);
+            final Socket socket = new Socket(host, Server.PORT);
 
 			new Thread() {
 				@Override

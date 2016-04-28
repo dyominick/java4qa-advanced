@@ -1,10 +1,9 @@
 package com.db.edu.chat.connection;
 
-import com.db.edu.chat.common.MyProperties;
 import com.db.edu.chat.server.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.io.*;
 import java.net.Socket;
 
@@ -14,6 +13,9 @@ public class RealClientConnection implements Connection {
     private Socket socket;
     private BufferedWriter socketWriter;
     private BufferedReader socketReader;
+
+    @Value("${host}")
+    private String host;
 
     @Override
     public String read() throws IOException {
@@ -42,7 +44,7 @@ public class RealClientConnection implements Connection {
 
     @Override
     public void accept() throws IOException{
-        socket = new Socket(MyProperties.getHost(), Server.PORT);
+        socket = new Socket(host, Server.PORT);
         socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }

@@ -12,11 +12,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-import com.db.edu.chat.common.MyProperties;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Value;
 
 
 public class ChatServerTest {
@@ -25,21 +24,24 @@ public class ChatServerTest {
 	private BufferedWriter socketWriter1, socketWriter2, socketWriter3;
 	private BufferedReader socketReader1, socketReader2, socketReader3;
 
+	@Value("${host}")
+	String host;
+
 	@Before
 	public void setUp() throws ServerError, IOException {
 		testServer = new Server();
 		testServer.start();
 		sleep(500);
 		
-		socket1 = new Socket(MyProperties.getHost(), Server.PORT);
+		socket1 = new Socket(host, Server.PORT);
 		socketWriter1 = new BufferedWriter(new OutputStreamWriter(socket1.getOutputStream()));
 		socketReader1 = new BufferedReader(new InputStreamReader(socket1.getInputStream()));
 		
-		socket2 = new Socket(MyProperties.getHost(), Server.PORT);
+		socket2 = new Socket(host, Server.PORT);
 		socketWriter2 = new BufferedWriter(new OutputStreamWriter(socket2.getOutputStream()));
 		socketReader2 = new BufferedReader(new InputStreamReader(socket2.getInputStream()));
 		
-		socket3 = new Socket(MyProperties.getHost(), Server.PORT);
+		socket3 = new Socket(host, Server.PORT);
 		socketWriter3 = new BufferedWriter(new OutputStreamWriter(socket3.getOutputStream()));
 		socketReader3 = new BufferedReader(new InputStreamReader(socket3.getInputStream()));
 		

@@ -2,6 +2,9 @@ package com.db.edu.chat.client;
 
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.db.edu.chat.connection.Connection;
 import com.db.edu.chat.connection.ConsoleConnection;
 import com.db.edu.chat.connection.RealClientConnection;
@@ -17,6 +20,8 @@ public class Client {
     }
 
     public static void main(String... args) {
+
+
         Connection networkConnection = new RealClientConnection();
         Connection consoleConnection = new ConsoleConnection();
 

@@ -2,12 +2,12 @@ package com.db.edu.chat.server;
 
 import static org.junit.Assume.assumeNotNull;
 
-import com.db.edu.chat.common.MyProperties;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.*;
 import java.net.Socket;
@@ -16,6 +16,9 @@ public class JUnitLoadTest {
     private static final Logger logger = LoggerFactory.getLogger(JUnitLoadTest.class);
 
     private IOException gotException = null;
+
+    @Value("${host}")
+    String host;
 
     Server ser;
     Socket readerClientSocket;
@@ -32,7 +35,7 @@ public class JUnitLoadTest {
 
         Socket readerClientSocket = null;
         try {
-            readerClientSocket = new Socket(MyProperties.getHost(), Server.PORT);
+            readerClientSocket = new Socket(host, Server.PORT);
         } catch (IOException e) {
             logger.error("Can't connect to server: ", e);
         }
@@ -59,7 +62,7 @@ public class JUnitLoadTest {
         });
         readerClient.start();
 
-        final Socket writerClientSocket = new Socket(MyProperties.getHost(), Server.PORT);
+        final Socket writerClientSocket = new Socket(host, Server.PORT);
         final BufferedWriter writerClientSocketWriter = new BufferedWriter(new OutputStreamWriter(writerClientSocket.getOutputStream()));
         socketWrite(writerClientSocketWriter, sentMessage);
 

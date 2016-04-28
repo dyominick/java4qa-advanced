@@ -14,7 +14,7 @@ public class ClientConnectionHandler implements Runnable {
     private static final Logger LOGGER = LoggerFactory.getLogger(ClientConnectionHandler.class);
 
     private final Connection connection;
-    private final Collection<Connection> realConnections;
+    private final Collection<Connection> connections;
     private BusinessLogic businessLogic;
 
     public ClientConnectionHandler(
@@ -23,7 +23,7 @@ public class ClientConnectionHandler implements Runnable {
         BusinessLogic businessLogic) throws IOException {
 
         this.connection = clientConnection;
-        this.realConnections = clientConnections;
+        this.connections = clientConnections;
         this.businessLogic = businessLogic;
     }
 
@@ -31,16 +31,17 @@ public class ClientConnectionHandler implements Runnable {
     public void run() {
         while(true) {
             try {
-                businessLogic.handle();
+                businessLogic.handle(connection);
             }
             catch (ClientDisconnectedException e) {
                 LOGGER.warn("Null message received");
-                realConnections.remove(connection);
+                connections.remove(connection);
+                connection.close();
                 break;
             }
             catch (FailedConnectionException e) {
                 LOGGER.error("Connection error with " + connection + ": ", e);
-                realConnections.remove(connection);
+                connections.remove(connection);
                 connection.close();
                 break;
             }

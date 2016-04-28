@@ -10,16 +10,14 @@ import java.util.Collection;
 public class ChatBusinessLogic implements BusinessLogic {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatBusinessLogic.class);
 
-    private Connection incomingConnection;
     private Collection<Connection> connections;
 
-    public ChatBusinessLogic(Connection incoming, Collection<Connection> connections) {
-        this.incomingConnection = incoming;
+    public ChatBusinessLogic(Collection<Connection> connections) {
         this.connections = connections;
     }
 
     @Override
-    public void handle() throws ClientDisconnectedException, FailedConnectionException{
+    public void handle(Connection incomingConnection) throws ClientDisconnectedException, FailedConnectionException{
 
         String message;
         try {
@@ -29,17 +27,17 @@ public class ChatBusinessLogic implements BusinessLogic {
         }
         if(message == null){
             String nullMessageWarning = "Client "+incomingConnection + "is disconnected.";
-            notifyAll(nullMessageWarning);
+            notifyAll(nullMessageWarning, incomingConnection);
             throw  new ClientDisconnectedException(nullMessageWarning);
         }
-        notifyAll(message);
+        notifyAll(message, incomingConnection);
     }
 
-    private void notifyAll(String message) throws FailedConnectionException{
+    private void notifyAll(String message, Connection incomingConnection) throws FailedConnectionException{
         for (Connection outcomingConnection : connections)
             try {
 
-                if (outcomingConnection == this.incomingConnection)
+                if (outcomingConnection == incomingConnection)
                     continue;
 
                 outcomingConnection.write(message);
@@ -51,8 +49,6 @@ public class ChatBusinessLogic implements BusinessLogic {
                 } catch (IOException e1) {
                     throw new FailedConnectionException(e1);
                 }
-                outcomingConnection.close();
-                connections.remove(outcomingConnection);
                 throw new FailedConnectionException(e);
             }
 
