@@ -34,13 +34,13 @@ public class ClientConnectionHandler implements Runnable {
                 businessLogic.handle(connection);
             }
             catch (ClientDisconnectedException e) {
-                LOGGER.warn("Null message received");
+                LOGGER.warn("Client was disconnected: "+connection);
                 connections.remove(connection);
                 connection.close();
                 break;
             }
             catch (FailedConnectionException e) {
-                LOGGER.error("Connection error with " + connection + ": ", e);
+                LOGGER.error("Client socket was closed: " + connection);
                 connections.remove(connection);
                 connection.close();
                 break;

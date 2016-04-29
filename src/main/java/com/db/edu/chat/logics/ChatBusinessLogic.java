@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.SocketException;
 import java.util.Collection;
 
 public class ChatBusinessLogic implements BusinessLogic {
@@ -22,7 +23,9 @@ public class ChatBusinessLogic implements BusinessLogic {
         String message;
         try {
             message = incomingConnection.read();
-        } catch (IOException e) {
+        } catch (SocketException e) {
+            throw new ClientDisconnectedException(e);
+        }catch (IOException e) {
             throw new FailedConnectionException(e);
         }
         if(message == null){
@@ -33,7 +36,7 @@ public class ChatBusinessLogic implements BusinessLogic {
         notifyAll(message, incomingConnection);
     }
 
-    private void notifyAll(String message, Connection incomingConnection) throws FailedConnectionException{
+    private void notifyAll(String message, Connection incomingConnection) throws FailedConnectionException, ClientDisconnectedException {
         for (Connection outcomingConnection : connections)
             try {
 
@@ -42,13 +45,11 @@ public class ChatBusinessLogic implements BusinessLogic {
 
                 outcomingConnection.write(message);
 
-            } catch (IOException e) {
+            } catch (SocketException e) {
+                throw new ClientDisconnectedException(e);
+            }
+            catch (IOException e) {
                 LOGGER.error("Error writing message " + message + " to connection " + outcomingConnection + ". Closing socket", e);
-                try {
-                    incomingConnection.write("Client disconnected " + outcomingConnection);
-                } catch (IOException e1) {
-                    throw new FailedConnectionException(e1);
-                }
                 throw new FailedConnectionException(e);
             }
 
